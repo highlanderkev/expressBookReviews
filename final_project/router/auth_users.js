@@ -43,7 +43,7 @@ regd_users.post("/login", (req,res) => {
       req.session.authorization = {
           accessToken, username
       };
-      return res.status(200).send("User successfully logged in.");
+      return res.status(200).send("Customer successfully logged in.");
   } else {
       return res.status(208).json({
           message: "Invalid Login. Check username and password."
@@ -57,7 +57,7 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
     const review = req.body.review;
     if(isbn in Object.keys(books)) {
         books[isbn].reviews[req.user] = review;
-        return res.send(JSON.stringify(books[isbn].reviews, null, 4));
+        return res.send(`The review for the book with ISBN ${isbn} has been added/updated`)
     } else {
         return res.send(`No Book with that ISBN: ${isbn}`)
     }
@@ -67,7 +67,7 @@ regd_users.delete("/auth/review/:isbn", (req, res) => {
     const isbn = req.params.isbn;
     if(isbn in Object.keys(books)) {
         delete books[isbn].reviews[req.user];
-        return res.send(JSON.stringify(books[isbn].reviews, null, 4));
+        return res.send(`Reviews for the ISBN ${isbn} posted by the user ${req.user} deleted.`);
     } else {
         return res.send(`No Book with that ISBN: ${isbn}`)
     }
